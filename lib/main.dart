@@ -1,5 +1,4 @@
-import 'package:course_app/components/sidebar_row.dart';
-import 'package:course_app/model/sidebar.dart';
+import 'package:course_app/screens/sidebar_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -14,11 +13,7 @@ class App extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        body: Center(
-          child: SidebarRow(
-            item: items[1],
-          ),
-        ),
+        body: SidebarScreen(),
       ),
     );
   }
