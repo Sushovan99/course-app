@@ -17,18 +17,106 @@ class App extends StatelessWidget {
       home: Scaffold(
         body: SafeArea(
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
             color: kBackgroundColor,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const HomeScreenNavbar(),
-                RecentCourseCard(course: recentCourses[0]),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Text(
+                        'Recents',
+                        style: kLargeTitleStyle,
+                      ),
+                      const SizedBox(
+                        height: 5.0,
+                      ),
+                      Text(
+                        '23 courses, more coming',
+                        style: kSubtitleStyle,
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  height: 28.0,
+                ),
+                const RecentCourseList()
               ],
             ),
           ),
         ),
       ),
+    );
+  }
+}
+
+class RecentCourseList extends StatefulWidget {
+  const RecentCourseList({super.key});
+
+  @override
+  State<RecentCourseList> createState() => _RecentCourseListState();
+}
+
+class _RecentCourseListState extends State<RecentCourseList> {
+  var currentPage = 0;
+
+  Widget UpdateContainer() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: recentCourses.map(
+        (course) {
+          var index = recentCourses.indexOf(course);
+          return Container(
+            height: 7.0,
+            width: 7.0,
+            margin: const EdgeInsets.symmetric(
+              horizontal: 6.0,
+            ),
+            decoration: BoxDecoration(
+              color: index == currentPage
+                  ? const Color(0xFF0971FE)
+                  : const Color(0xFFA6AEBD),
+              shape: BoxShape.circle,
+            ),
+          );
+        },
+      ).toList(),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        SizedBox(
+          height: 320,
+          width: double.infinity,
+          child: PageView.builder(
+            itemBuilder: ((context, index) {
+              return Opacity(
+                opacity: currentPage == index ? 1 : 0.5,
+                child: RecentCourseCard(course: recentCourses[index]),
+              );
+            }),
+            itemCount: recentCourses.length,
+            controller: PageController(
+              initialPage: 0,
+              viewportFraction: 0.68,
+            ),
+            onPageChanged: (index) {
+              setState(() {
+                currentPage = index;
+              });
+            },
+            clipBehavior: Clip.antiAlias,
+          ),
+        ),
+        UpdateContainer()
+      ],
     );
   }
 }
@@ -39,7 +127,10 @@ class HomeScreenNavbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 20.0),
+      padding: const EdgeInsets.symmetric(
+        vertical: 20.0,
+        horizontal: 20.0,
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: const [
