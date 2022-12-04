@@ -9,7 +9,7 @@ class RecentCourseCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Stack(
-      alignment: AlignmentDirectional.topEnd,
+      alignment: Alignment.topRight,
       children: [
         Padding(
           padding: const EdgeInsets.only(
@@ -65,9 +65,8 @@ class RecentCourseCard extends StatelessWidget {
                       const Spacer(),
                       Image.asset(
                         'asset/illustrations/${course.illustration}',
-                        fit: BoxFit.contain,
+                        fit: BoxFit.cover,
                         // height: 133.0,
-                        width: 183.0,
                       ),
                     ],
                   ),
