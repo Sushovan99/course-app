@@ -17,7 +17,7 @@ class App extends StatelessWidget {
       home: Scaffold(
         body: SafeArea(
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 20.0),
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
             color: kBackgroundColor,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -72,7 +72,7 @@ class SearchFieldWidget extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.only(
           left: 12.0,
-          right: 33.0,
+          right: 20.0,
         ),
         child: Container(
           decoration: BoxDecoration(
@@ -87,7 +87,9 @@ class SearchFieldWidget extends StatelessWidget {
             ],
           ),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16.0,
+            ),
             child: TextField(
               style: kSearchTextStyle,
               cursorColor: kPrimaryLabelColor,

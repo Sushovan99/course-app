@@ -60,15 +60,9 @@ class RecentCourseCard extends StatelessWidget {
                   ),
                 ),
                 Expanded(
-                  child: Row(
-                    children: [
-                      const Spacer(),
-                      Image.asset(
-                        'asset/illustrations/${course.illustration}',
-                        fit: BoxFit.cover,
-                        // height: 133.0,
-                      ),
-                    ],
+                  child: Image.asset(
+                    'asset/illustrations/${course.illustration}',
+                    fit: BoxFit.cover,
                   ),
                 ),
               ],
