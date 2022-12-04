@@ -53,26 +53,15 @@ class SidebarScreen extends StatelessWidget {
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.08,
             ),
-            SidebarRow(
-              item: items[0],
-            ),
-            const SizedBox(
-              height: 32,
-            ),
-            SidebarRow(
-              item: items[1],
-            ),
-            const SizedBox(
-              height: 32,
-            ),
-            SidebarRow(
-              item: items[2],
-            ),
-            const SizedBox(
-              height: 32,
-            ),
-            SidebarRow(
-              item: items[3],
+            ...items.map(
+              (item) => Column(
+                children: [
+                  SidebarRow(item: item),
+                  const SizedBox(
+                    height: 32,
+                  ),
+                ],
+              ),
             ),
             const Spacer(),
             Row(
