@@ -1,7 +1,10 @@
-import 'package:course_app/components/cards/recent_course_card.dart';
+import 'dart:ui';
+
+import 'package:course_app/components/list/recent_course_list.dart';
 import 'package:course_app/constants.dart';
-import 'package:course_app/model/course.dart';
 import 'package:flutter/material.dart';
+import 'components/home_screen_nav.dart';
+import 'model/course.dart';
 
 void main() {
   runApp(const App());
@@ -44,7 +47,20 @@ class App extends StatelessWidget {
                 const SizedBox(
                   height: 28.0,
                 ),
-                const RecentCourseList()
+                const RecentCourseList(),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    top: 25.0,
+                    left: 20.0,
+                    right: 20.0,
+                    bottom: 16.0,
+                  ),
+                  child: Text(
+                    'Explore',
+                    style: kTitle1Style,
+                  ),
+                ),
+                const ExploreCourseList(),
               ],
             ),
           ),
@@ -54,190 +70,82 @@ class App extends StatelessWidget {
   }
 }
 
-class RecentCourseList extends StatefulWidget {
-  const RecentCourseList({super.key});
-
-  @override
-  State<RecentCourseList> createState() => _RecentCourseListState();
-}
-
-class _RecentCourseListState extends State<RecentCourseList> {
-  var currentPage = 0;
-
-  Widget UpdateContainer() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: recentCourses.map(
-        (course) {
-          var index = recentCourses.indexOf(course);
-          return Container(
-            height: 7.0,
-            width: 7.0,
-            margin: const EdgeInsets.symmetric(
-              horizontal: 6.0,
-            ),
-            decoration: BoxDecoration(
-              color: index == currentPage
-                  ? const Color(0xFF0971FE)
-                  : const Color(0xFFA6AEBD),
-              shape: BoxShape.circle,
-            ),
-          );
-        },
-      ).toList(),
-    );
-  }
+class ExploreCourseList extends StatelessWidget {
+  const ExploreCourseList({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        SizedBox(
-          height: 320,
-          width: double.infinity,
-          child: PageView.builder(
-            itemBuilder: ((context, index) {
-              return Opacity(
-                opacity: currentPage == index ? 1 : 0.5,
-                child: RecentCourseCard(course: recentCourses[index]),
-              );
-            }),
-            itemCount: recentCourses.length,
-            controller: PageController(
-              initialPage: 0,
-              viewportFraction: 0.68,
-            ),
-            onPageChanged: (index) {
-              setState(() {
-                currentPage = index;
-              });
-            },
-            clipBehavior: Clip.antiAlias,
-          ),
-        ),
-        UpdateContainer()
-      ],
+    return SizedBox(
+      height: 120,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        shrinkWrap: true,
+        itemCount: exploreCourses.length,
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: EdgeInsets.only(left: index == 0 ? 20.0 : 0.0),
+            child: ExploreCourseCard(course: exploreCourses[index]),
+          );
+        },
+      ),
     );
   }
 }
 
-class HomeScreenNavbar extends StatelessWidget {
-  const HomeScreenNavbar({super.key});
+class ExploreCourseCard extends StatelessWidget {
+  const ExploreCourseCard({super.key, required this.course});
+  final Course course;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(
-        vertical: 20.0,
-        horizontal: 20.0,
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: const [
-          SidebarButton(),
-          SearchFieldWidget(),
-          Icon(
-            Icons.notifications,
-            color: kPrimaryLabelColor,
-            size: 18.0,
-          ),
-          SizedBox(width: 16.0),
-          CircleAvatar(
-            radius: 18.0,
-            backgroundImage: AssetImage('asset/images/profile.jpg'),
-          )
-        ],
-      ),
-    );
-  }
-}
-
-class SearchFieldWidget extends StatelessWidget {
-  const SearchFieldWidget({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.only(
-          left: 12.0,
-          right: 20.0,
-        ),
+      padding: const EdgeInsets.only(right: 20.0),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(41.0),
         child: Container(
+          height: 120.0,
+          width: 280.0,
           decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(14.0),
-            boxShadow: const [
-              BoxShadow(
-                color: kShadowColor,
-                offset: Offset(0, 12),
-                blurRadius: 16.0,
-              ),
-            ],
+            gradient: course.background,
           ),
           child: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16.0,
+            padding: const EdgeInsets.only(
+              left: 32,
             ),
-            child: TextField(
-              style: kSearchTextStyle,
-              cursorColor: kPrimaryLabelColor,
-              decoration: const InputDecoration(
-                icon: Icon(
-                  Icons.search,
-                  color: kPrimaryLabelColor,
-                  size: 20.0,
+            child: Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Text(
+                        course.courseSubtitle,
+                        style: kCardSubtitleStyle,
+                      ),
+                      const SizedBox(
+                        height: 5.0,
+                      ),
+                      Text(
+                        course.courseTitle,
+                        style: kCardTitleStyle,
+                      ),
+                    ],
+                  ),
                 ),
-                border: InputBorder.none,
-                hintText: "Search for courses",
-              ),
-              onChanged: (inputText) {
-                print(inputText);
-              },
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Image.asset(
+                      'asset/illustrations/${course.illustration}',
+                      fit: BoxFit.cover,
+                      height: 100.0,
+                    )
+                  ],
+                )
+              ],
             ),
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class SidebarButton extends StatelessWidget {
-  const SidebarButton({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return RawMaterialButton(
-      onPressed: () {
-        print('Sidebar button pressed');
-      },
-      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-      highlightColor: Colors.transparent,
-      splashColor: Colors.transparent,
-      constraints: const BoxConstraints(
-        maxHeight: 40.0,
-        maxWidth: 40.0,
-      ),
-      child: Container(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 12.0,
-          vertical: 14.0,
-        ),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(12.0),
-          boxShadow: const [
-            BoxShadow(
-                color: kShadowColor, offset: Offset(0, 12.0), blurRadius: 16.0),
-          ],
-        ),
-        child: Image.asset(
-          'asset/icons/icon-sidebar.png',
-          color: kPrimaryLabelColor,
         ),
       ),
     );
