@@ -5,8 +5,9 @@ import 'package:flutter/material.dart';
 import '../constants.dart';
 
 class HomeScreenNavbar extends StatelessWidget {
-  const HomeScreenNavbar({super.key});
+  const HomeScreenNavbar({super.key, required this.triggerAnimation});
 
+  final VoidCallback triggerAnimation;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -16,16 +17,18 @@ class HomeScreenNavbar extends StatelessWidget {
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: const [
-          SidebarButton(),
-          SearchFieldWidget(),
-          Icon(
+        children: [
+          SidebarButton(
+            triggerAnimation: triggerAnimation,
+          ),
+          const SearchFieldWidget(),
+          const Icon(
             Icons.notifications,
             color: kPrimaryLabelColor,
             size: 18.0,
           ),
-          SizedBox(width: 16.0),
-          CircleAvatar(
+          const SizedBox(width: 16.0),
+          const CircleAvatar(
             radius: 18.0,
             backgroundImage: AssetImage('asset/images/profile.jpg'),
           )
