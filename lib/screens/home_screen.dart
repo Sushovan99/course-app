@@ -4,6 +4,7 @@ import '../components/home_screen_nav.dart';
 import '../components/list/explore_course_list.dart';
 import '../components/list/recent_course_list.dart';
 import '../constants.dart';
+import 'continue_watching_screen.dart';
 import 'sidebar_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -61,6 +62,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
           SafeArea(
@@ -117,35 +119,38 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               ),
             ),
           ),
+          const ContinueWatchingScreen(),
           IgnorePointer(
             ignoring: sidebarHidden,
-            child: Stack(children: [
-              FadeTransition(
-                opacity: fadeAnimation,
-                child: GestureDetector(
-                  child: Container(
-                    height: MediaQuery.of(context).size.height,
-                    width: MediaQuery.of(context).size.width,
-                    decoration: const BoxDecoration(
-                      color: Color.fromRGBO(36, 38, 41, 0.4),
+            child: Stack(
+              children: [
+                FadeTransition(
+                  opacity: fadeAnimation,
+                  child: GestureDetector(
+                    child: Container(
+                      height: MediaQuery.of(context).size.height,
+                      width: MediaQuery.of(context).size.width,
+                      decoration: const BoxDecoration(
+                        color: Color.fromRGBO(36, 38, 41, 0.4),
+                      ),
                     ),
+                    onTap: () {
+                      setState(() {
+                        sidebarHidden = !sidebarHidden;
+                      });
+                      sidebarAnimationController.reverse();
+                    },
                   ),
-                  onTap: () {
-                    setState(() {
-                      sidebarHidden = !sidebarHidden;
-                    });
-                    sidebarAnimationController.reverse();
-                  },
                 ),
-              ),
-              SlideTransition(
-                position: sidebarAnimation,
-                child: const SafeArea(
-                  bottom: false,
-                  child: SidebarScreen(),
+                SlideTransition(
+                  position: sidebarAnimation,
+                  child: const SafeArea(
+                    bottom: false,
+                    child: SidebarScreen(),
+                  ),
                 ),
-              ),
-            ]),
+              ],
+            ),
           ),
         ],
       ),
