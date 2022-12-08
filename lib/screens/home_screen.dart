@@ -20,7 +20,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   late Animation<Offset> sidebarAnimation;
   late AnimationController sidebarAnimationController;
   late Animation<double> fadeAnimation;
-  var sidebarHidden = false;
+  var sidebarHidden = true;
 
   @override
   void initState() {
